@@ -33,7 +33,7 @@ public class AlunoController {
         return alunoService.saveAluno(aluno);
     }
 
-    @PostMapping("/{id}")
+    @DeleteMapping("/{id}")
     private ResponseEntity<Void> excluirAluno(@PathVariable Long id) {
         alunoService.deleteAluno(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
