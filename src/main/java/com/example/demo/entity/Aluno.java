@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Aluno {
@@ -15,11 +15,11 @@ public class Aluno {
     private Long id;
 
     private String nome;
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
     private String email;
     private String senha;
 
-    public Aluno(String nome, Date dataNascimento, String email, String senha) {
+    public Aluno(String nome, LocalDate dataNascimento, String email, String senha) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.email = email;
@@ -45,11 +45,11 @@ public class Aluno {
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
