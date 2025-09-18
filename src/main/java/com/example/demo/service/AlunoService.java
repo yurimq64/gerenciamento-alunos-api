@@ -1,55 +1,58 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.AlunoDTO;
+import com.example.demo.dto.RequisicaoAtualizaAlunoDto;
+import com.example.demo.dto.RequisicaoCriacaoAlunoDto;
 import com.example.demo.entity.Aluno;
+import com.example.demo.mapper.AlunoMapper;
 import com.example.demo.repository.AlunoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.validation.AlunoValidation;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class AlunoService {
 
-    @Autowired
-    private AlunoRepository alunoRepository;
+
+    private final AlunoRepository alunoRepository;
+    private final AlunoMapper alunoMapper;
+    private final AlunoValidation alunoValidation;
 
     public List<AlunoDTO> findAllAlunos() {
-        return alunoRepository.findAll()
-                .stream()
-                .map(this::toDTO)
-                .toList();
+    	List<Aluno> todosAlunos = alunoRepository.findAll();
+        return alunoMapper.toDtoList(todosAlunos);
     }
 
-    public Optional<AlunoDTO> findAlunoById(Long id) {
-        return alunoRepository.findById(id)
-                .map(this::toDTO);
+    public AlunoDTO findAlunoById(Long id) {
+    	Aluno alunoExistente = alunoValidation.obterAlunoSeExistir(id);
+        return alunoMapper.toDto(alunoExistente);
     }
 
-    public AlunoDTO saveAluno(Aluno aluno) {
-        Aluno alunoSaved = alunoRepository.save(aluno);
-        return toDTO(alunoSaved);
+    @Transactional
+    public AlunoDTO saveAluno(RequisicaoCriacaoAlunoDto dto) {
+    	alunoValidation.verificaSeAlunoExistePeloEmail(dto.email());
+    	Aluno entity =  alunoMapper.toEntity(dto);
+        alunoRepository.save(entity);
+        return alunoMapper.toDto(entity);
     }
 
+    @Transactional
     public void deleteAluno(Long id) {
+        alunoValidation.verificaSeAlunoExistePeloId(id);
         alunoRepository.deleteById(id);
     }
 
-    public AlunoDTO updateAluno(Long id,Aluno updatedAluno) {
-        return alunoRepository.findById(id)
-                .map(aluno -> {
-                    aluno.setNome(updatedAluno.getNome());
-                    aluno.setEmail(updatedAluno.getEmail());
-                    aluno.setDataNascimento(updatedAluno.getDataNascimento());
-                    aluno.setSenha(updatedAluno.getSenha());
-
-                    Aluno alunoSaved = alunoRepository.save(aluno);
-                    return toDTO(alunoSaved);
-                }).orElseThrow(() -> new RuntimeException("Aluno não existe!"));
-    }
-
-    private AlunoDTO toDTO(Aluno aluno) {
-        return new AlunoDTO(aluno.getId(), aluno.getNome(), aluno.getEmail());
+    @Transactional
+    public AlunoDTO updateAluno(Long id,RequisicaoAtualizaAlunoDto dto) {
+    	Aluno alunoAtual = alunoValidation.obterAlunoSeExistir(id);
+    	alunoValidation.validaIdUrlDiferenteCorpo(id, dto.email());
+    	alunoMapper.atualizaDto(dto, alunoAtual);
+    	return alunoMapper.toDto(alunoAtual);
     }
 }

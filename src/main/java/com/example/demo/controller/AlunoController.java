@@ -1,48 +1,55 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.AlunoDTO;
+import com.example.demo.dto.RequisicaoAtualizaAlunoDto;
+import com.example.demo.dto.RequisicaoCriacaoAlunoDto;
 import com.example.demo.entity.Aluno;
 import com.example.demo.service.AlunoService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("aluno")
 public class AlunoController {
 
-    @Autowired
-    private AlunoService alunoService;
+    
+    private final AlunoService alunoService;
 
     @GetMapping
-    private List<AlunoDTO> buscarAlunos() {
-        return alunoService.findAllAlunos();
+    public ResponseEntity<List<AlunoDTO>> buscarAlunos() {
+    	List<AlunoDTO> listAlunos = alunoService.findAllAlunos();
+        return ResponseEntity.ok(listAlunos);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<AlunoDTO> buscarAlunoPorId(@PathVariable Long id) {
-        return alunoService.findAlunoById(id)
-                .map(aluno -> new ResponseEntity<>(aluno, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<AlunoDTO> buscarAlunoPorId(@PathVariable Long id) {
+    	AlunoDTO aluno = alunoService.findAlunoById(id);
+        return ResponseEntity.ok(aluno);
     }
 
     @PostMapping
-    private AlunoDTO criarAluno(@RequestBody Aluno aluno) {
-        return alunoService.saveAluno(aluno);
+    public ResponseEntity<AlunoDTO> criarAluno(@RequestBody RequisicaoCriacaoAlunoDto dto) {
+    	AlunoDTO alunoSalvo = alunoService.saveAluno(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(alunoSalvo);
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<Void> excluirAluno(@PathVariable Long id) {
+    public ResponseEntity<Void> excluirAluno(@PathVariable Long id) {
         alunoService.deleteAluno(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping ("/{id}")
-    private AlunoDTO atualizarAluno(@PathVariable Long id, @RequestBody Aluno aluno) {
-        return alunoService.updateAluno(id, aluno);
+    public ResponseEntity<AlunoDTO> atualizarAluno(@PathVariable Long id, @RequestBody RequisicaoAtualizaAlunoDto Dto) {
+    	AlunoDTO alunoAtualizado = alunoService.updateAluno(id, Dto);
+        return ResponseEntity.ok(alunoAtualizado);
     }
 
 }
