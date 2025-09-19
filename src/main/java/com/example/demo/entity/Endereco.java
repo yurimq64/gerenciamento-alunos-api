@@ -13,14 +13,14 @@ public class Endereco {
     private Long id;
 
     private String logradouro;
-    private int numero;
+    private String numero;
     private String cep;
     private String complemento;
 
     public Endereco() {
     }
 
-    public Endereco(Long id, String logradouro, int numero, String cep, String complemento) {
+    public Endereco(Long id, String logradouro, String numero, String cep, String complemento) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
@@ -44,11 +44,11 @@ public class Endereco {
         this.logradouro = logradouro;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
