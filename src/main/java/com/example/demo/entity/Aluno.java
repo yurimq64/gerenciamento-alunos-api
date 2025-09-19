@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -18,6 +15,9 @@ public class Aluno {
     private LocalDate dataNascimento;
     private String email;
     private String senha;
+
+    @OneToOne(mappedBy = "aluno", cascade = CascadeType.ALL)
+    private Endereco endereco;
 
     public Aluno(String nome, LocalDate dataNascimento, String email, String senha) {
         this.nome = nome;
@@ -67,5 +67,13 @@ public class Aluno {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 }
