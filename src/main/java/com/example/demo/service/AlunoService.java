@@ -50,6 +50,6 @@ public class AlunoService {
     }
 
     private AlunoDTO toDTO(Aluno aluno) {
-        return new AlunoDTO(aluno.getId(), aluno.getNome(), aluno.getEmail());
+        return new AlunoDTO(aluno.getId(), aluno.getNome(), aluno.getEmail(), aluno.getEndereco());
     }
 }
