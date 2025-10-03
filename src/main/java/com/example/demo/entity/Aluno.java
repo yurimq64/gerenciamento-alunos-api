@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Aluno {
@@ -18,6 +19,14 @@ public class Aluno {
 
     @OneToOne(mappedBy = "aluno", cascade = CascadeType.ALL)
     private Endereco endereco;
+
+    @ManyToMany
+    @JoinTable(
+            name = "aluno_cursos",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id")
+    )
+    private List<Curso> cursos;
 
     public Aluno(String nome, LocalDate dataNascimento, String email, String senha) {
         this.nome = nome;
@@ -75,5 +84,13 @@ public class Aluno {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
     }
 }
