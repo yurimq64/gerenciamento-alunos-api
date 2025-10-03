@@ -12,6 +12,15 @@ Este projeto é uma API REST desenvolvida em Java com o framework Spring Boot. A
 * **H2 Database**: Banco de dados em memória para desenvolvimento e testes.
 * **Maven**: Para o gerenciamento de dependências e build do projeto.
 
+## Relacionamento entre Entidades
+
+O modelo de dados da aplicação possui as seguintes entidades e relacionamentos:
+
+* **Aluno e Endereco**: Relacionamento **Um-para-Um** (`@OneToOne`). Cada aluno possui apenas um endereço.
+* **Aluno e Curso**: Relacionamento **Muitos-para-Muitos** (`@ManyToMany`). Um aluno pode estar matriculado em vários cursos, e um curso pode ter vários alunos.
+* **Curso e Centro**: Relacionamento **Muitos-para-Um** (`@ManyToOne`). Muitos cursos podem pertencer a um único centro acadêmico.
+* **Centro e Curso**: Relacionamento **Um-para-Muitos** (`@OneToMany`). Um centro acadêmico pode abrigar vários cursos.
+
 ## Funcionalidades
 
 A API oferece as seguintes funcionalidades para as entidades `Aluno` e `Endereco`:
