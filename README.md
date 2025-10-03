@@ -59,3 +59,49 @@ A API oferece as seguintes funcionalidades para as entidades `Aluno` e `Endereco
     "email": "joao.silva@example.com",
     "senha": "umaSenhaForte123"
 }
+```
+
+## ⚙️ Como Executar o Projeto
+
+### Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina:
+* [JDK](https://www.oracle.com/java/technologies/downloads/) (versão 24 ou superior)
+* [Maven](https://maven.apache.org/download.cgi) (ou pode usar o Maven Wrapper incluso)
+
+### Rodando a Aplicação
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/seu-usuario/api-rest-gerenciamento-alunos-spring-boot.git](https://github.com/seu-usuario/api-rest-gerenciamento-alunos-spring-boot.git)
+    ```
+
+2.  **Acesse o diretório do projeto:**
+    ```bash
+    cd api-rest-gerenciamento-alunos-spring-boot
+    ```
+
+3.  **Execute a aplicação usando o Maven Wrapper:**
+    * No Linux ou macOS:
+        ```bash
+        ./mvnw spring-boot:run
+        ```
+    * No Windows:
+        ```bash
+        ./mvnw.cmd spring-boot:run
+        ```
+
+A aplicação estará disponível em `http://localhost:8080`.
+
+## 🗄️ Acessando o Banco de Dados
+
+O projeto utiliza o banco de dados em memória H2. Para acessá-lo:
+
+1.  Com a aplicação rodando, acesse o seguinte endereço no seu navegador:
+    `http://localhost:8080/h2-console`
+
+2.  Utilize as seguintes credenciais para conectar:
+    * **Driver Class**: `org.h2.Driver`
+    * **JDBC URL**: `jdbc:h2:~/test`
+    * **User Name**: `sa`
+    * **Password**: (deixe em branco)
